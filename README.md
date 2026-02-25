@@ -1,85 +1,90 @@
-# REDO Price Tracker Bot
+# REDO Price Tracker Bot 📊
 
-Telegram бот для отслеживания цены токена REDO и отправки обновлений каждую минуту в канал.
+*(Русская версия ниже / Russian version below)*
 
-## Описание
+A professional Telegram bot designed to track the REDO token price in real-time and broadcast formatted updates to a Telegram channel. It leverages the global DexScreener API to fetch accurate token data, including price changes over multiple timeframes.
 
-Бот автоматически получает актуальную цену токена REDO через DexScreener API и отправляет форматированные сообщения в Telegram канал каждую минуту. Сообщения содержат:
+## Features ✨
+- **Real-time Price Tracking:** Automatically fetches the latest REDO token price via DexScreener API.
+- **Detailed Timeframes:** Displays price percentage changes for 5 minutes, 1 hour, 6 hours, and 24 hours.
+- **Visual Indicators:** Uses intuitive emojis (🟢 / 🔴) to easily spot bullish or bearish trends.
+- **Automated Broadcasts:** Sends updates to a designated Telegram channel every minute (configurable).
+- **Environment Driven:** Securely relies on `.env` variables, making it safe for production deployments and public repositories.
 
-- Текущую цену в USD
-- Изменение за 5 минут, 1 час, 6 часов и 24 часа
-- Эмодзи индикаторы (🟢 для роста, 🔴 для падения)
+## Installation & Setup 🚀
 
-## Деплой на Railway
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/yourusername/redo_price_telegram.git
+   cd redo_price_telegram
+   ```
 
-### Быстрый старт
+2. **Install dependencies:**
+   Make sure you have Python 3.7+ installed.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-1. **Подключите репозиторий к Railway:**
-   - Зайдите на [Railway](https://railway.com/)
-   - Нажмите "New Project" → "Deploy from GitHub repo"
-   - Выберите репозиторий `redoprice`
+3. **Configure the Environment:**
+   Copy `.env.example` to `.env` and fill in your details:
+   ```bash
+   cp .env.example .env
+   ```
+   *Required variables:*
+   - `BOT_TOKEN`: Your Telegram Bot token from @BotFather.
+   - `CHAT_ID`: The target channel ID (e.g., `-1001234567890`) where the bot is added as an administrator.
 
-2. **Настройте переменные окружения:**
-   В настройках проекта Railway добавьте следующие переменные:
-   - `BOT_TOKEN` - токен вашего Telegram бота
-   - `CHAT_ID` - ID канала для отправки сообщений (например: `-1002741793652`)
-   - `TOKEN_CA` - контрактный адрес токена REDO
-   - `UPDATE_INTERVAL` - интервал обновления в секундах (по умолчанию: `60`)
-   - `DEXSCREENER_API` - URL API (по умолчанию: `https://api.dexscreener.com/latest/dex/tokens/`)
+4. **Run the Bot:**
+   ```bash
+   python price_tracker.py
+   ```
 
-3. **Настройте процесс:**
-   - Railway автоматически определит Python проект
-   - Убедитесь, что выбран тип сервиса "Worker" (не Web Service)
-   - Команда запуска: `python price_tracker.py`
+## Deployment Platform (Railway / Heroku) ☁️
 
-4. **Деплой:**
-   - Railway автоматически задеплоит проект после подключения репозитория
-   - Проверьте логи в панели Railway для подтверждения успешного запуска
+This project includes a `Procfile` and `runtime.txt`, making it ready for seamless deployment on platforms like Railway or Heroku. 
+Simply connect your GitHub repository and set the required environment variables in your platform's dashboard.
 
-## Локальная установка
+---
 
-1. Убедитесь, что у вас установлен Python 3.7 или выше
-2. Установите зависимости:
-```bash
-pip install -r requirements.txt
-```
+# Бот для Отслеживания Цены REDO 📊
 
-3. Настройте переменные окружения или отредактируйте `config.py`:
-   - `BOT_TOKEN` - токен вашего Telegram бота
-   - `CHAT_ID` - ID канала для отправки сообщений
-   - `TOKEN_CA` - контрактный адрес токена REDO
-   - `UPDATE_INTERVAL` - интервал обновления в секундах (по умолчанию 60)
+Профессиональный Telegram-бот для отслеживания цены токена REDO в реальном времени и отправки обновлений в Telegram-канал. Бот использует API DexScreener для получения точных данных о токене, включая изменения цены за разные периоды времени.
 
-4. Запустите:
-```bash
-python price_tracker.py
-```
+## Особенности ✨
+- **Отслеживание в реальном времени:** Автоматически получает последнюю цену токена REDO через DexScreener API.
+- **Детальная статистика:** Отображает процентное изменение цены за 5 минут, 1 час, 6 часов и 24 часа.
+- **Визуальные индикаторы:** Использует интуитивно понятные эмодзи (🟢 / 🔴) для отображения тренда.
+- **Автоматическая рассылка:** Отправляет обновления в указанный канал каждую минуту (настраивается).
+- **Безопасная конфигурация:** Использует переменные окружения (`.env`), что делает проект безопасным для публичных репозиториев и деплоя.
 
-## Структура проекта
+## Установка и запуск 🚀
 
-- `price_tracker.py` - основной файл с логикой бота
-- `config.py` - конфигурационные настройки (использует переменные окружения)
-- `requirements.txt` - зависимости Python
-- `Procfile` - конфигурация для Railway/Heroku
-- `runtime.txt` - версия Python для Railway
-- `README.md` - документация
+1. **Клонируйте репозиторий:**
+   ```bash
+   git clone https://github.com/yourusername/redo_price_telegram.git
+   cd redo_price_telegram
+   ```
 
-## API
+2. **Установите зависимости:**
+   Требуется Python 3.7 или выше.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Бот использует DexScreener API для получения актуальных данных о цене токена:
-- Endpoint: `https://api.dexscreener.com/latest/dex/tokens/{TOKEN_CA}`
-- Обновление каждую минуту (настраивается)
-- Автоматическая обработка ошибок и повторные попытки
+3. **Настройте окружение:**
+   Скопируйте файл `.env.example` в `.env` и заполните ваши данные:
+   ```bash
+   cp .env.example .env
+   ```
+   *Необходимые переменные:*
+   - `BOT_TOKEN`: Токен вашего Telegram-бота от @BotFather.
+   - `CHAT_ID`: ID целевого канала (например, `-1001234567890`). **Бот должен быть администратором канала**.
 
-## Формат сообщений
+4. **Запустите бота:**
+   ```bash
+   python price_tracker.py
+   ```
 
-Сообщения отправляются в следующем формате:
-```
-🟢 $REDO price 0.5878$ | +1.69%
-🕐 5M: +0.12% | 1H: +0.45% | 6H: +1.23% | 24H: +1.69%
-```
+## Деплой (Railway / Heroku) ☁️
 
-Где:
-- 🟢/🔴 - индикатор роста/падения за 24 часа
-- Цена в USD с 4 знаками после запятой
-- Процентное изменение за 5 минут, 1 час, 6 часов и 24 часа
+Проект включает `Procfile` и `runtime.txt`, что делает его полностью готовым к быстрому развертыванию на облачных платформах (Railway, Heroku и др.). Подключите ваш GitHub репозиторий и укажите переменные окружения в панели управления хостинга.

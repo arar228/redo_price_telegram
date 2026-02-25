@@ -146,11 +146,18 @@ class RedoPriceTracker:
     
     async def run_tracker(self):
         """Основной цикл отслеживания цены"""
+        print("="*50)
         print("Starting REDO price tracker...")
         print(f"Chat ID: {self.chat_id}")
+        print(f"Token CA: {self.token_ca}")
+        print(f"API URL: {self.api_url}")
         print(f"Update interval: {UPDATE_INTERVAL} seconds")
+        print("="*50)
         
+        iteration = 0
         while True:
+            iteration += 1
+            print(f"\n--- Iteration {iteration} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---")
             try:
                 # Получаем данные о цене
                 price_data = await self.get_token_price()
@@ -178,8 +185,25 @@ class RedoPriceTracker:
                 await asyncio.sleep(10)  # Ждем 10 секунд перед повтором
 
 async def main():
-    tracker = RedoPriceTracker()
-    await tracker.run_tracker()
+    try:
+        print("="*50)
+        print("Initializing REDO Price Tracker...")
+        print("="*50)
+        tracker = RedoPriceTracker()
+        print("Tracker initialized successfully")
+        await tracker.run_tracker()
+    except Exception as e:
+        print(f"FATAL ERROR in main(): {e}")
+        import traceback
+        traceback.print_exc()
+        raise
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        print("Starting application...")
+        asyncio.run(main())
+    except Exception as e:
+        print(f"FATAL ERROR during startup: {e}")
+        import traceback
+        traceback.print_exc()
+        raise
