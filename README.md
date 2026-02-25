@@ -39,11 +39,6 @@ A professional Telegram bot designed to track the REDO token price in real-time 
    python price_tracker.py
    ```
 
-## Deployment Platform (Railway / Heroku) ☁️
-
-This project includes a `Procfile` and `runtime.txt`, making it ready for seamless deployment on platforms like Railway or Heroku. 
-Simply connect your GitHub repository and set the required environment variables in your platform's dashboard.
-
 ---
 
 # Бот для Отслеживания Цены REDO 📊
@@ -84,7 +79,3 @@ Simply connect your GitHub repository and set the required environment variables
    ```bash
    python price_tracker.py
    ```
-
-## Деплой (Railway / Heroku) ☁️
-
-Проект включает `Procfile` и `runtime.txt`, что делает его полностью готовым к быстрому развертыванию на облачных платформах (Railway, Heroku и др.). Подключите ваш GitHub репозиторий и укажите переменные окружения в панели управления хостинга.
