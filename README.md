@@ -1,81 +1,54 @@
-# REDO Price Tracker Bot 📊
+# REDO Price Tracker
 
-*(Русская версия ниже / Russian version below)*
+A focused Python worker that fetches REDO market data from DexScreener and publishes formatted updates to a Telegram channel. It demonstrates a small integration boundary: external API data, message formatting, channel-permission checks, and a configurable polling loop.
 
-A professional Telegram bot designed to track the REDO token price in real-time and broadcast formatted updates to a Telegram channel. It leverages the global DexScreener API to fetch accurate token data, including price changes over multiple timeframes.
+[Source map](#source-map) · [Setup](#setup-requirements) · [Русский](docs/README.ru.md)
 
-## Features ✨
-- **Real-time Price Tracking:** Automatically fetches the latest REDO token price via DexScreener API.
-- **Detailed Timeframes:** Displays price percentage changes for 5 minutes, 1 hour, 6 hours, and 24 hours.
-- **Visual Indicators:** Uses intuitive emojis (🟢 / 🔴) to easily spot bullish or bearish trends.
-- **Automated Broadcasts:** Sends updates to a designated Telegram channel every minute (configurable).
-- **Environment Driven:** Securely relies on `.env` variables, making it safe for production deployments and public repositories.
+## Source map
 
-## Installation & Setup 🚀
+| Source | Responsibility |
+|---|---|
+| [price_tracker.py](price_tracker.py) — `get_token_price` | Market-data retrieval |
+| [price_tracker.py](price_tracker.py) — `format_price_message` | Price and timeframe formatting |
+| [price_tracker.py](price_tracker.py) — `check_bot_permissions`, `send_price_update`, `run_tracker` | Telegram delivery and worker lifecycle |
+| [config.py](config.py) | Environment-based settings |
+| [Procfile](Procfile), [runtime.txt](runtime.txt) | Existing deployment entry point and runtime declaration |
+| [setup_instructions.md](setup_instructions.md) | Existing Russian setup notes |
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/yourusername/redo_price_telegram.git
-   cd redo_price_telegram
-   ```
+**Stack:** Python, asyncio, `python-telegram-bot==20.7`, and `requests==2.31.0`. Data fetching uses synchronous Requests calls inside the worker. Updates include price changes over the 5-minute, 1-hour, 6-hour, and 24-hour windows available from the provider.
 
-2. **Install dependencies:**
-   Make sure you have Python 3.7+ installed.
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Setup requirements
 
-3. **Configure the Environment:**
-   Copy `.env.example` to `.env` and fill in your details:
-   ```bash
-   cp .env.example .env
-   ```
-   *Required variables:*
-   - `BOT_TOKEN`: Your Telegram Bot token from @BotFather.
-   - `CHAT_ID`: The target channel ID (e.g., `-1001234567890`) where the bot is added as an administrator.
+```bash
+git clone https://github.com/arar228/redo_price_telegram.git
+cd redo_price_telegram
+python -m venv .venv
+# Activate .venv using your shell's activation command.
+python -m pip install -r requirements.txt
+```
 
-4. **Run the Bot:**
-   ```bash
-   python price_tracker.py
-   ```
+Choose a Python runtime compatible with the pinned packages; treat `runtime.txt` as a historical deployment declaration to recheck when restoring the service.
 
----
+| Environment variable | Purpose |
+|---|---|
+| `BOT_TOKEN` | Bot authentication |
+| `CHAT_ID` | Intended channel recipient |
+| `TOKEN_CA` | Tracked token contract address; this is public asset identity, not a signing key |
+| `DEXSCREENER_API`, `DEXSCREENER_URL` | API and display-link configuration |
+| `UPDATE_INTERVAL` | Polling interval |
 
-# Бот для Отслеживания Цены REDO 📊
+The current `config.py` reads the **process environment** and does not call `load_dotenv()`. Export settings through your shell/service manager or an existing launcher; copying `.env.example` into `.env` alone does not load those settings.
 
-Профессиональный Telegram-бот для отслеживания цены токена REDO в реальном времени и отправки обновлений в Telegram-канал. Бот использует API DexScreener для получения точных данных о токене, включая изменения цены за разные периоды времени.
+After provisioning a dedicated test channel and bot permissions, the declared worker command is:
 
-## Особенности ✨
-- **Отслеживание в реальном времени:** Автоматически получает последнюю цену токена REDO через DexScreener API.
-- **Детальная статистика:** Отображает процентное изменение цены за 5 минут, 1 час, 6 часов и 24 часа.
-- **Визуальные индикаторы:** Использует интуитивно понятные эмодзи (🟢 / 🔴) для отображения тренда.
-- **Автоматическая рассылка:** Отправляет обновления в указанный канал каждую минуту (настраивается).
-- **Безопасная конфигурация:** Использует переменные окружения (`.env`), что делает проект безопасным для публичных репозиториев и деплоя.
+```bash
+python price_tracker.py
+```
 
-## Установка и запуск 🚀
+This command sends real Telegram messages. External market data can be stale, incomplete, or unavailable; published figures are informational rather than guaranteed execution prices.
 
-1. **Клонируйте репозиторий:**
-   ```bash
-   git clone https://github.com/yourusername/redo_price_telegram.git
-   cd redo_price_telegram
-   ```
+## Review status
 
-2. **Установите зависимости:**
-   Требуется Python 3.7 или выше.
-   ```bash
-   pip install -r requirements.txt
-   ```
+Source/documentation review: **2026-09-07**. No provider calls, Telegram messages, live deployment check, or end-to-end tests were performed in this pass. No GitHub Actions workflow is included in this snapshot.
 
-3. **Настройте окружение:**
-   Скопируйте файл `.env.example` в `.env` и заполните ваши данные:
-   ```bash
-   cp .env.example .env
-   ```
-   *Необходимые переменные:*
-   - `BOT_TOKEN`: Токен вашего Telegram-бота от @BotFather.
-   - `CHAT_ID`: ID целевого канала (например, `-1001234567890`). **Бот должен быть администратором канала**.
-
-4. **Запустите бота:**
-   ```bash
-   python price_tracker.py
-   ```
+Keep credentials and channel-specific settings outside public examples. A useful next verification is a recorded DexScreener response test for formatting, followed by one controlled delivery to a test channel. Existing [Russian setup notes](setup_instructions.md) remain available; the environment-loading clarification above applies to this revision.
